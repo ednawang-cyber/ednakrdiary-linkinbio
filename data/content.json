@@ -1,0 +1,53 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "name": "零基礎班",
+      "day": "週二",
+      "level": "零基礎",
+      "time": "20:00-21:30",
+      "availableSpots": 1,
+      "description": "目前進度及報名請私訊老師詢問",
+      "registrationLink": ""
+    },
+    {
+      "id": "2",
+      "name": "零基礎班",
+      "day": "週三",
+      "level": "零基礎",
+      "time": "21:00-22:30",
+      "availableSpots": 1,
+      "description": "新開班！可報名",
+      "registrationLink": "https://forms.gle/mQM7UX812GQXvXhA7"
+    },
+    {
+      "id": "3",
+      "name": "三級班",
+      "day": "週四",
+      "level": "三級",
+      "time": "20:00-21:30",
+      "availableSpots": 2,
+      "description": "目前進度及報名請私訊老師詢問",
+      "registrationLink": ""
+    }
+  ],
+  "resources": [
+    {
+      "id": "1",
+      "title": "等待你新增資源",
+      "description": "在 data/content.json 中編輯",
+      "category": "示例",
+      "link": "#",
+      "image": ""
+    }
+  ],
+  "deals": [
+    {
+      "id": "1",
+      "title": "等待你新增好康",
+      "description": "在 data/content.json 中編輯",
+      "link": "#",
+      "image": ""
+    }
+  ]
+}

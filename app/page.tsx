@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,33 +30,21 @@ interface Deal {
   image: string;
 }
 
-export default function Home() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [resources, setResources] = useState<Resource[]>([]);
-  const [deals, setDeals] = useState<Deal[]>([]);
-  const [loading, setLoading] = useState(true);
+async function getContent() {
+  try {
+    const content = await import("@/data/content.json");
+    return content.default;
+  } catch (error) {
+    console.error("Error loading content:", error);
+    return { courses: [], resources: [], deals: [] };
+  }
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [coursesRes, resourcesRes, dealsRes] = await Promise.all([
-          fetch("/api/courses"),
-          fetch("/api/resources"),
-          fetch("/api/deals"),
-        ]);
-
-        if (coursesRes.ok) setCourses(await coursesRes.json());
-        if (resourcesRes.ok) setResources(await resourcesRes.json());
-        if (dealsRes.ok) setDeals(await dealsRes.json());
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+export default async function Home() {
+  const data = await getContent();
+  const courses: Course[] = data.courses || [];
+  const resources: Resource[] = data.resources || [];
+  const deals: Deal[] = data.deals || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -72,6 +58,7 @@ export default function Home() {
               width={200}
               height={200}
               className="w-40 h-40 rounded-full mx-auto object-cover border-4 border-white shadow-lg"
+              priority
             />
           </div>
 
@@ -236,12 +223,6 @@ export default function Home() {
               ))}
             </div>
           </section>
-        )}
-
-        {loading && (
-          <div className="text-center py-12">
-            <p className="text-slate-600">載入中...</p>
-          </div>
         )}
 
         {/* Footer */}
