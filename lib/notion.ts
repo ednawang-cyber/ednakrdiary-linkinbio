@@ -78,7 +78,7 @@ export async function fetchCourses(): Promise<Course[]> {
       return [];
     }
 
-    const response = await notion.databases.query({
+    const response = await (notion.databases as any).query({
       database_id: databaseId,
       filter: {
         property: "Published",
@@ -119,7 +119,7 @@ export async function fetchResources(): Promise<Resource[]> {
       return [];
     }
 
-    const response = await notion.databases.query({
+    const response = await (notion.databases as any).query({
       database_id: databaseId,
       filter: {
         property: "Published",
@@ -158,7 +158,7 @@ export async function fetchDeals(): Promise<Deal[]> {
       return [];
     }
 
-    const response = await notion.databases.query({
+    const response = await (notion.databases as any).query({
       database_id: databaseId,
       filter: {
         property: "Published",
