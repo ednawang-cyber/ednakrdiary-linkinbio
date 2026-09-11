@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>韓語蜂蜜罐 - 新設計預覽</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #faf8f3;
+      color: #2c2c2c;
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .avatar-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 128px;
+      height: 128px;
+      margin-bottom: 48px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(168, 85, 247, 0.1) 100%);
+      border-radius: 50%;
+      font-size: 80px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+      letter-spacing: 4px;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: #2c2c2c;
+      margin: 24px auto;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: 32px;
+      letter-spacing: 0.5px;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 4px;
+      background: linear-gradient(90deg, #2c2c2c 0%, #b8b8b8 100%);
+      margin-top: 8px;
+    }
+
+    /* Bio */
+    .bio {
+      text-align: center;
+      margin: 40px 0 60px 0;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #444;
+    }
+
+    .bio p {
+      margin-bottom: 16px;
+    }
+
+    .bio .highlight {
+      font-size: 14px;
+      color: #666;
+      letter-spacing: 2px;
+      margin: 20px 0;
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 60px 0;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      letter-spacing: 2px;
+      border: 1px solid rgba(44, 44, 44, 0.2);
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2c2c2c;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1a1a1a;
+      border-color: rgba(44, 44, 44, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #2c2c2c;
+    }
+
+    .btn-secondary:hover {
+      background: #e8e8e8;
+      border-color: rgba(44, 44, 44, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Course Section */
+    .section {
+      margin: 100px 0 80px 0;
+    }
+
+    .course-card {
+      padding: 24px 0;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .course-card:last-child {
+      border-bottom: none;
+    }
+
+    .course-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .course-time {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .course-spots {
+      display: inline-block;
+      font-size: 13px;
+      color: #666;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .course-desc {
+      font-size: 14px;
+      color: #555;
+      margin: 12px 0;
+    }
+
+    .course-link {
+      display: inline-block;
+      font-size: 13px;
+      font-family: 'Playfair Display', serif;
+      color: #2c2c2c;
+      border-bottom: 2px solid #2c2c2c;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+
+    .course-link:hover {
+      opacity: 0.7;
+    }
+
+    /* Resource Grid */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .resource-card {
+      border: 1px solid #ddd;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .resource-card:hover {
+      border-color: #999;
+    }
+
+    .resource-image {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .resource-content {
+      padding: 24px;
+    }
+
+    .resource-category {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #999;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .resource-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .resource-desc {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid #e8e8e8;
+      color: #999;
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 42px;
+      }
+
+      .container {
+        padding: 40px 16px;
+      }
+
+      .bio {
+        font-size: 16px;
+      }
+    }
+
+    /* Info Box */
+    .info-box {
+      background: rgba(0, 0, 0, 0.02);
+      border-left: 3px solid #2c2c2c;
+      padding: 16px;
+      margin: 32px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="avatar-circle">🍯</div>
+      <h1>蔚樺</h1>
+      <p class="subtitle">웨이화</p>
+      <div class="divider"></div>
+      <h2 style="font-size: 28px; margin: 24px 0 0 0;">韓語蜂蜜罐</h2>
+    </div>
+
+    <!-- Bio -->
+    <div class="bio">
+      <p>一位透過各種學習方式學韓文的台灣女子</p>
+      <p class="highlight">成均館交換 · 教育部獎學金 · 大邱大學語學堂結業</p>
+      <p>現在，我用韓綜、美食和日常故事，<br>把韓文變得有趣又好記</p>
+      <p>跟著我，蜂蜜罐裡的韓文秘訣等你來發現 🍯</p>
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="buttons">
+      <a href="#" class="btn btn-primary">加入 LINE</a>
+      <a href="#" class="btn btn-secondary">查看課程</a>
+    </div>
+
+    <!-- Courses Section -->
+    <section class="section">
+      <h2>目前開課班級</h2>
+      <div class="section-divider"></div>
+
+      <div class="course-card">
+        <div class="course-title">週二 · 零基礎 · 零基礎班</div>
+        <p class="course-time">20:00-21:30</p>
+        <p class="course-spots">可插班 1 人</p>
+        <p class="course-desc">目前進度及報名請私訊老師詢問</p>
+      </div>
+
+      <div class="course-card">
+        <div class="course-title">週三 · 零基礎 · 零基礎班</div>
+        <p class="course-time">21:00-22:30</p>
+        <p class="course-spots">可插班 1 人</p>
+        <p class="course-desc">新開班！可報名</p>
+        <a href="#" class="course-link">報名 →</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-title">週四 · 三級 · 三級班</div>
+        <p class="course-time">20:00-21:30</p>
+        <p class="course-spans">可插班 2 人</p>
+        <p class="course-desc">目前進度及報名請私訊老師詢問</p>
+      </div>
+    </section>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <strong>設計預覽說明</strong>
+      這是新設計風格的靜態預覽。實際網站使用 Next.js、Tailwind CSS 以及 Google Fonts 實現。
+      <br><br>
+      主要設計特色：
+      <br>• 米白色背景（#faf8f3）
+      <br>• Serif 字體（Playfair Display + Lora）
+      <br>• 細線分隔設計
+      <br>• 大量留白
+      <br>• 圓形頭像設計
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>© 2024 蔚樺 웨이화 | 韓語蜂蜜罐</p>
+      <p style="margin-top: 8px;"><a href="/admin" style="color: #999; text-decoration: none;">後台管理 →</a></p>
+    </div>
+  </div>
+</body>
+</html>
