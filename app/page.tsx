@@ -84,13 +84,15 @@ export default async function Home() {
 
           {/* Title and Brand */}
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-serif text-stone-900 mb-3">
-              蔚樺
-            </h1>
-            <p className="text-sm text-stone-600 tracking-widest font-light">
-              웨이화
-            </p>
-            <div className="mt-8 pt-8 border-t border-stone-300">
+            <div className="flex flex-col items-center gap-1 mb-8">
+              <h1 className="text-5xl md:text-6xl font-serif text-stone-900">
+                蔚樺
+              </h1>
+              <p className="text-sm text-stone-600 tracking-widest font-light">
+                웨이화
+              </p>
+            </div>
+            <div className="border-t border-stone-300 pt-8">
               <h2 className="text-2xl md:text-3xl font-serif text-stone-900 font-light">
                 韓語蜂蜜罐
               </h2>
@@ -99,13 +101,13 @@ export default async function Home() {
 
           {/* Bio */}
           <div className="text-center mb-14 max-w-2xl mx-auto">
-            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light mb-4">
+            <p className="text-base text-stone-700 leading-relaxed font-light mb-4">
               一位透過各種學習方式學韓文的台灣女子
             </p>
-            <p className="text-xs text-stone-500 leading-relaxed font-light mb-6 tracking-widest">
+            <p className="text-base text-stone-600 leading-relaxed font-light mb-6">
               成均館交換 · 教育部獎學金 · 大邱大學語學堂結業
             </p>
-            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light mb-6">
+            <p className="text-base text-stone-700 leading-relaxed font-light mb-6">
               現在，我用韓綜、美食和日常故事，<br />
               把韓文變得有趣又好記
             </p>
@@ -119,15 +121,15 @@ export default async function Home() {
             <Link
               href="https://line.me/R/ti/p/@942pdsee"
               target="_blank"
-              className="btn-elegant px-8 py-3 bg-stone-900 text-stone-50 text-center font-serif text-base tracking-widest hover:bg-stone-800 transition"
+              className="btn-elegant px-8 py-3 bg-stone-900 text-stone-50 text-center font-serif text-base tracking-widest hover:bg-stone-800 transition duration-300"
             >
-              加入 LINE
+              加入 LINE 預約一對一課程
             </Link>
             <a
               href="#courses"
-              className="btn-elegant px-8 py-3 bg-stone-200 text-stone-900 text-center font-serif text-base tracking-widest hover:bg-stone-300 transition"
+              className="btn-elegant px-8 py-3 bg-stone-300 text-stone-900 text-center font-serif text-base tracking-widest hover:bg-stone-400 transition duration-300"
             >
-              查看課程
+              查看目前開課班級
             </a>
           </div>
         </div>
