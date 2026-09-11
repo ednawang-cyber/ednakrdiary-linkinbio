@@ -67,9 +67,9 @@ export default async function Home() {
     <main className="min-h-screen bg-stone-50">
       <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
         {/* Header Section */}
-        <div className="mb-20">
+        <div className="mb-24">
           {/* Avatar */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-16">
             <div className="avatar-circle w-32 h-32 flex items-center justify-center">
               <Image
                 src="/images/avatar.jpg"
@@ -83,49 +83,49 @@ export default async function Home() {
           </div>
 
           {/* Title and Brand */}
-          <div className="text-center mb-10">
-            <h1 className="text-5xl md:text-6xl font-serif text-stone-900 mb-2">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-6xl font-serif text-stone-900 mb-3">
               蔚樺
             </h1>
-            <p className="text-lg text-stone-600 tracking-widest font-light">
+            <p className="text-sm text-stone-600 tracking-widest font-light">
               웨이화
             </p>
-            <div className="mt-6 pt-6 border-t border-stone-200">
-              <h2 className="text-2xl md:text-3xl font-serif text-stone-800">
+            <div className="mt-8 pt-8 border-t border-stone-300">
+              <h2 className="text-2xl md:text-3xl font-serif text-stone-900 font-light">
                 韓語蜂蜜罐
               </h2>
             </div>
           </div>
 
           {/* Bio */}
-          <div className="prose prose-stone max-w-none text-center mb-12">
-            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light">
+          <div className="text-center mb-14 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light mb-4">
               一位透過各種學習方式學韓文的台灣女子
             </p>
-            <p className="text-sm text-stone-600 leading-relaxed font-light mb-6">
+            <p className="text-xs text-stone-500 leading-relaxed font-light mb-6 tracking-widest">
               成均館交換 · 教育部獎學金 · 大邱大學語學堂結業
             </p>
-            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light">
+            <p className="text-base md:text-lg text-stone-700 leading-relaxed font-light mb-6">
               現在，我用韓綜、美食和日常故事，<br />
               把韓文變得有趣又好記
             </p>
-            <p className="text-base text-stone-600 leading-relaxed font-light mt-6">
+            <p className="text-base text-stone-600 leading-relaxed font-light">
               跟著我，蜂蜜罐裡的韓文秘訣等你來發現 🍯
             </p>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col gap-4 max-w-sm mx-auto">
+          <div className="flex flex-col gap-3 max-w-sm mx-auto">
             <Link
               href="https://line.me/R/ti/p/@942pdsee"
               target="_blank"
-              className="btn-elegant px-8 py-4 bg-stone-900 text-stone-50 text-center font-serif text-lg tracking-widest hover:bg-stone-800"
+              className="btn-elegant px-8 py-3 bg-stone-900 text-stone-50 text-center font-serif text-base tracking-widest hover:bg-stone-800 transition"
             >
               加入 LINE
             </Link>
             <a
               href="#courses"
-              className="btn-elegant px-8 py-4 bg-stone-100 text-stone-900 text-center font-serif text-lg tracking-widest hover:bg-stone-200"
+              className="btn-elegant px-8 py-3 bg-stone-200 text-stone-900 text-center font-serif text-base tracking-widest hover:bg-stone-300 transition"
             >
               查看課程
             </a>
@@ -136,10 +136,10 @@ export default async function Home() {
         {courses.length > 0 && (
           <section id="courses" className="mb-20">
             <div className="mb-12">
-              <h2 className="text-3xl font-serif text-stone-900 mb-2">
+              <h2 className="text-3xl font-serif text-stone-900 mb-4">
                 目前開課班級
               </h2>
-              <div className="w-12 h-1 bg-gradient-to-r from-stone-900 to-stone-300"></div>
+              <div className="w-16 h-px bg-stone-400"></div>
             </div>
 
             <div className="space-y-6">
@@ -185,13 +185,13 @@ export default async function Home() {
         {resources.length > 0 && resources[0].id !== "1" && (
           <section id="resources" className="mb-20">
             <div className="mb-12">
-              <h2 className="text-3xl font-serif text-stone-900 mb-2">
+              <h2 className="text-3xl font-serif text-stone-900 mb-4">
                 學習資源
               </h2>
-              <div className="w-12 h-1 bg-gradient-to-r from-stone-900 to-stone-300"></div>
+              <div className="w-16 h-px bg-stone-400"></div>
             </div>
 
-            <div className="grid gap-6">
+            <div className="grid gap-8">
               {resources.map((resource) => (
                 <Link
                   key={resource.id}
@@ -199,7 +199,7 @@ export default async function Home() {
                   target="_blank"
                   className="block group"
                 >
-                  <div className="border border-stone-200 p-6 hover:border-stone-400 transition">
+                  <div className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300">
                     {resource.image && (
                       <div className="mb-4 overflow-hidden h-40">
                         <img
@@ -235,13 +235,13 @@ export default async function Home() {
         {deals.length > 0 && deals[0].id !== "1" && (
           <section id="deals" className="mb-20">
             <div className="mb-12">
-              <h2 className="text-3xl font-serif text-stone-900 mb-2">
+              <h2 className="text-3xl font-serif text-stone-900 mb-4">
                 好康分享
               </h2>
-              <div className="w-12 h-1 bg-gradient-to-r from-stone-900 to-stone-300"></div>
+              <div className="w-16 h-px bg-stone-400"></div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               {deals.map((deal) => (
                 <Link
                   key={deal.id}
@@ -249,7 +249,7 @@ export default async function Home() {
                   target="_blank"
                   className="block group"
                 >
-                  <div className="border border-stone-200 overflow-hidden hover:border-stone-400 transition">
+                  <div className="border border-stone-300 overflow-hidden hover:border-stone-500 transition duration-300">
                     {deal.image && (
                       <div className="overflow-hidden h-48">
                         <img
@@ -277,12 +277,12 @@ export default async function Home() {
         )}
 
         {/* Footer */}
-        <div className="pt-12 border-t border-stone-200 text-center">
-          <p className="text-sm text-stone-600">
+        <div className="pt-16 border-t border-stone-300 text-center">
+          <p className="text-xs text-stone-600 tracking-widest">
             © 2024 蔚樺 웨이화 | 韓語蜂蜜罐
           </p>
-          <p className="text-xs text-stone-500 mt-2">
-            <Link href="/admin" className="hover:underline">
+          <p className="text-xs text-stone-500 mt-3">
+            <Link href="/admin" className="hover:text-stone-700 transition">
               後台管理
             </Link>
           </p>
