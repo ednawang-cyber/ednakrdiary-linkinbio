@@ -341,22 +341,27 @@ export default function AdminPage() {
                   <button
                     onClick={async () => {
                       setSaving(true);
-                      await fetch("/api/homepage-config", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          name: config.name,
-                          korean_name: config.korean_name,
-                          brand_name: config.brand_name,
-                          bio: config.bio,
-                          line_link: config.line_link,
-                          button1_color: config.button1_color,
-                          button2_color: config.button2_color,
-                          bg_color: config.bg_color,
-                        }),
-                      });
+                      try {
+                        await fetch("/api/homepage-config", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            name: config.name,
+                            korean_name: config.korean_name,
+                            brand_name: config.brand_name,
+                            bio: config.bio,
+                            line_link: config.line_link,
+                            button1_color: config.button1_color,
+                            button2_color: config.button2_color,
+                            bg_color: config.bg_color,
+                          }),
+                        });
+                        await loadAllData();
+                        alert("保存成功！");
+                      } catch (error) {
+                        alert("保存失敗");
+                      }
                       setSaving(false);
-                      alert("保存成功！");
                     }}
                     className="w-full py-2 bg-stone-900 text-white"
                   >
