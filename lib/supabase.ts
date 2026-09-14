@@ -70,14 +70,19 @@ export async function getHomepageConfig(): Promise<HomepageConfig | null> {
       .from("homepage_config")
       .select("*")
       .eq("id", 1)
-      .single();
+      .limit(1);
 
     if (error) {
       console.error("Error fetching homepage config:", error);
       return null;
     }
 
-    return data as HomepageConfig;
+    if (!data || data.length === 0) {
+      console.error("No homepage config found");
+      return null;
+    }
+
+    return data[0] as HomepageConfig;
   } catch (error) {
     console.error("Error in getHomepageConfig:", error);
     return null;
