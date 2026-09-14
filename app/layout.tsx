@@ -38,6 +38,10 @@ export default function RootLayout({
       lang="zh-TW"
       className={`${playfairDisplay.variable} ${lora.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className="min-h-full flex flex-col bg-stone-50">{children}</body>
     </html>
   );
