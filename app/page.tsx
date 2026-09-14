@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getHomepageConfig } from "@/lib/supabase";
 
 interface Course {
   id: string;
@@ -63,8 +64,32 @@ export default async function Home() {
   const resources: Resource[] = data.resources || [];
   const deals: Deal[] = data.deals || [];
 
+  // 從 Supabase 讀取首頁配置
+  const config = await getHomepageConfig();
+
+  // 預設配置
+  const defaultConfig = {
+    name: "蔚樺",
+    korean_name: "웨이화",
+    brand_name: "韓語蜂蜜罐",
+    bio: "一位透過各種學習方式學韓文的台灣女子",
+    avatar_url: "/images/avatar.jpg",
+    line_link: "https://line.me/R/ti/p/@942pdsee",
+    button1_text: "加入 LINE 預約一對一課程",
+    button2_text: "查看目前開課班級",
+    bg_color: "#faf8f3",
+    button1_color: "#000000",
+    button2_color: "#d3d3d3",
+  };
+
+  // 使用 Supabase 配置或預設值
+  const pageConfig = config || defaultConfig;
+
   return (
-    <main className="min-h-screen bg-stone-50">
+    <main
+      className="min-h-screen"
+      style={{ backgroundColor: pageConfig.bg_color }}
+    >
       <div className="max-w-3xl mx-auto px-6 py-16 md:py-24">
         {/* Header Section */}
         <div className="mb-24">
@@ -72,8 +97,8 @@ export default async function Home() {
           <div className="flex justify-center mb-16">
             <div className="avatar-circle w-32 h-32 flex items-center justify-center">
               <Image
-                src="/images/avatar.jpg"
-                alt="蔚樺"
+                src={pageConfig.avatar_url}
+                alt={pageConfig.name}
                 width={128}
                 height={128}
                 className="w-28 h-28 rounded-full object-cover"
@@ -86,50 +111,42 @@ export default async function Home() {
           <div className="text-center mb-12">
             <div className="flex flex-col items-center gap-1 mb-8">
               <h1 className="text-5xl md:text-6xl font-serif text-stone-900">
-                蔚樺
+                {pageConfig.name}
               </h1>
               <p className="text-sm text-stone-600 tracking-widest font-light">
-                웨이화
+                {pageConfig.korean_name}
               </p>
             </div>
             <div className="border-t border-stone-300 pt-8">
               <h2 className="text-2xl md:text-3xl font-serif text-stone-900 font-light">
-                韓語蜂蜜罐
+                {pageConfig.brand_name}
               </h2>
             </div>
           </div>
 
           {/* Bio */}
           <div className="text-center mb-14 max-w-2xl mx-auto">
-            <p className="text-base text-stone-700 leading-relaxed font-light mb-4">
-              一位透過各種學習方式學韓文的台灣女子
-            </p>
-            <p className="text-base text-stone-600 leading-relaxed font-light mb-6">
-              成均館交換 · 教育部獎學金 · 大邱大學語學堂結業
-            </p>
-            <p className="text-base text-stone-700 leading-relaxed font-light mb-6">
-              現在，我用韓綜、美食和日常故事，<br />
-              把韓文變得有趣又好記
-            </p>
-            <p className="text-base text-stone-600 leading-relaxed font-light">
-              跟著我，蜂蜜罐裡的韓文秘訣等你來發現 🍯
+            <p className="text-base text-stone-700 leading-relaxed font-light">
+              {pageConfig.bio}
             </p>
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 max-w-sm mx-auto">
             <Link
-              href="https://line.me/R/ti/p/@942pdsee"
+              href={pageConfig.line_link}
               target="_blank"
-              className="btn-elegant px-8 py-3 bg-stone-900 text-stone-50 text-center font-serif text-base tracking-widest hover:bg-stone-800 transition duration-300"
+              className="btn-elegant px-8 py-3 text-stone-50 text-center font-serif text-base tracking-widest transition duration-300 hover:opacity-80"
+              style={{ backgroundColor: pageConfig.button1_color }}
             >
-              加入 LINE 預約一對一課程
+              {pageConfig.button1_text}
             </Link>
             <a
               href="#courses"
-              className="btn-elegant px-8 py-3 bg-stone-300 text-stone-900 text-center font-serif text-base tracking-widest hover:bg-stone-400 transition duration-300"
+              className="btn-elegant px-8 py-3 text-stone-900 text-center font-serif text-base tracking-widest transition duration-300 hover:opacity-80"
+              style={{ backgroundColor: pageConfig.button2_color }}
             >
-              查看目前開課班級
+              {pageConfig.button2_text}
             </a>
           </div>
         </div>
