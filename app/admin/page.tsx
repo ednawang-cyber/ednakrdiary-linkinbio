@@ -10,9 +10,11 @@ interface Course {
   day: string;
   level: string;
   time: string;
-  availableSpots: number;
+  available_spots: number;
   description: string;
-  registrationLink: string;
+  registration_link: string;
+  published: boolean;
+  order_num: number;
 }
 
 interface Resource {
@@ -22,6 +24,8 @@ interface Resource {
   category: string;
   link: string;
   image: string;
+  published: boolean;
+  order_num: number;
 }
 
 interface Deal {
@@ -30,6 +34,8 @@ interface Deal {
   description: string;
   link: string;
   image: string;
+  published: boolean;
+  order_num: number;
 }
 
 export default function AdminPage() {
@@ -43,11 +49,16 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  // 編輯表單狀態
+  const [editingCourse, setEditingCourse] = useState<Partial<Course> | null>(null);
+  const [editingResource, setEditingResource] = useState<Partial<Resource> | null>(null);
+  const [editingDeal, setEditingDeal] = useState<Partial<Deal> | null>(null);
+
   useEffect(() => {
     const saved = localStorage.getItem("linkinbio_admin_auth");
     if (saved) {
       setIsAuthenticated(true);
-      loadConfig();
+      loadAllData();
     }
   }, []);
 
@@ -57,68 +68,136 @@ export default function AdminPage() {
     if (password === adminPassword) {
       setIsAuthenticated(true);
       localStorage.setItem("linkinbio_admin_auth", "true");
-      loadConfig();
+      loadAllData();
     } else {
       alert("密碼錯誤");
     }
   };
 
-  const loadConfig = async () => {
+  const loadAllData = async () => {
     setLoading(true);
     try {
-      const [configRes, contentRes] = await Promise.all([
+      const [configRes, coursesRes, resourcesRes, dealsRes] = await Promise.all([
         fetch("/api/homepage-config"),
-        fetch("/api/content"),
+        fetch("/api/courses"),
+        fetch("/api/resources"),
+        fetch("/api/deals"),
       ]);
 
-      if (configRes.ok) {
-        const data = await configRes.json();
-        setConfig(data);
+      if (configRes.ok) setConfig(await configRes.json());
+      if (coursesRes.ok) {
+        const data = await coursesRes.json();
+        setCourses(data.courses || []);
       }
-
-      if (contentRes.ok) {
-        const contentData = await contentRes.json();
-        setCourses(contentData.courses || []);
-        setResources(contentData.resources || []);
-        setDeals(contentData.deals || []);
+      if (resourcesRes.ok) {
+        const data = await resourcesRes.json();
+        setResources(data.resources || []);
+      }
+      if (dealsRes.ok) {
+        const data = await dealsRes.json();
+        setDeals(data.deals || []);
       }
     } catch (error) {
-      console.error("Error loading:", error);
+      console.error("Error loading data:", error);
     }
     setLoading(false);
   };
 
-  const handleSaveConfig = async () => {
-    if (!config) return;
-    setSaving(true);
+  // 課程操作
+  const saveCourse = async (course: Partial<Course>) => {
     try {
-      await fetch("/api/homepage-config", {
-        method: "POST",
+      const method = course.id ? "PUT" : "POST";
+      await fetch("/api/courses", {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: config.name,
-          korean_name: config.korean_name,
-          brand_name: config.brand_name,
-          bio: config.bio,
-          avatar_url: config.avatar_url,
-          line_link: config.line_link,
-          button1_text: config.button1_text,
-          button2_text: config.button2_text,
-          bg_color: config.bg_color,
-          button1_color: config.button1_color,
-          button2_color: config.button2_color,
-        }),
+        body: JSON.stringify(course),
       });
-      alert("首頁配置已保存！");
+      await loadAllData();
+      setEditingCourse(null);
+      alert("保存成功！");
     } catch {
       alert("保存失敗");
     }
-    setSaving(false);
+  };
+
+  const deleteCourse = async (id: string) => {
+    if (!confirm("確定刪除？")) return;
+    try {
+      await fetch("/api/courses", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      await loadAllData();
+    } catch {
+      alert("刪除失敗");
+    }
+  };
+
+  // 資源操作
+  const saveResource = async (resource: Partial<Resource>) => {
+    try {
+      const method = resource.id ? "PUT" : "POST";
+      await fetch("/api/resources", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(resource),
+      });
+      await loadAllData();
+      setEditingResource(null);
+      alert("保存成功！");
+    } catch {
+      alert("保存失敗");
+    }
+  };
+
+  const deleteResource = async (id: string) => {
+    if (!confirm("確定刪除？")) return;
+    try {
+      await fetch("/api/resources", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      await loadAllData();
+    } catch {
+      alert("刪除失敗");
+    }
+  };
+
+  // 好康操作
+  const saveDeal = async (deal: Partial<Deal>) => {
+    try {
+      const method = deal.id ? "PUT" : "POST";
+      await fetch("/api/deals", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(deal),
+      });
+      await loadAllData();
+      setEditingDeal(null);
+      alert("保存成功！");
+    } catch {
+      alert("保存失敗");
+    }
+  };
+
+  const deleteDeal = async (id: string) => {
+    if (!confirm("確定刪除？")) return;
+    try {
+      await fetch("/api/deals", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      await loadAllData();
+    } catch {
+      alert("刪除失敗");
+    }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setPassword("");
     localStorage.removeItem("linkinbio_admin_auth");
   };
 
@@ -126,11 +205,7 @@ export default function AdminPage() {
     return (
       <main className="min-h-screen bg-stone-50 flex items-center justify-center">
         <div className="w-full max-w-sm px-6">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-serif text-stone-900 mb-2">後台管理</h1>
-            <p className="text-stone-600">蔚樺 웨이화 | 韓語蜂蜜罐</p>
-          </div>
-
+          <h1 className="text-3xl font-serif text-center mb-8">後台管理</h1>
           <form
             onSubmit={handleLogin}
             className="space-y-4 bg-white p-8 border border-stone-300"
@@ -139,22 +214,16 @@ export default function AdminPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-stone-300 focus:outline-none focus:border-stone-600"
-              placeholder="輸入密碼"
+              className="w-full px-4 py-2 border border-stone-300"
+              placeholder="密碼"
             />
             <button
               type="submit"
-              className="w-full py-2 bg-stone-900 text-white font-serif tracking-widest hover:bg-stone-800"
+              className="w-full py-2 bg-stone-900 text-white hover:bg-stone-800"
             >
               登入
             </button>
           </form>
-
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-stone-600 hover:underline">
-              返回首頁
-            </Link>
-          </div>
         </div>
       </main>
     );
@@ -162,15 +231,12 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-stone-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex justify-between items-center mb-8 pb-6 border-b border-stone-300">
-          <div>
-            <h1 className="text-3xl font-serif text-stone-900">後台管理</h1>
-            <p className="text-stone-600 mt-1">蔚樺 웨이화 | 韓語蜂蜜罐</p>
-          </div>
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-serif">後台管理</h1>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-stone-900 text-white text-sm hover:bg-stone-800"
+            className="px-4 py-2 bg-stone-900 text-white"
           >
             登出
           </button>
@@ -179,19 +245,18 @@ export default function AdminPage() {
         {/* Tabs */}
         <div className="flex gap-2 mb-8 border-b border-stone-300 overflow-x-auto">
           {[
-            { id: "homepage", label: "首頁配置" },
-            { id: "courses", label: "課程管理" },
-            { id: "resources", label: "資源管理" },
-            { id: "deals", label: "好康分享" },
-            { id: "preview", label: "預覽" },
+            { id: "homepage", label: "首頁設定" },
+            { id: "courses", label: "課程" },
+            { id: "resources", label: "資源" },
+            { id: "deals", label: "好康" },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-serif border-b-2 transition whitespace-nowrap ${
+              className={`px-4 py-2 border-b-2 ${
                 activeTab === tab.id
-                  ? "border-stone-900 text-stone-900"
-                  : "border-transparent text-stone-600 hover:text-stone-900"
+                  ? "border-stone-900 font-serif"
+                  : "border-transparent text-stone-600"
               }`}
             >
               {tab.label}
@@ -199,7 +264,6 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* Content */}
         {loading ? (
           <div className="text-center py-12">加載中...</div>
         ) : (
@@ -208,284 +272,482 @@ export default function AdminPage() {
             {activeTab === "homepage" && config && (
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-serif mb-1">名字</label>
-                    <input
-                      type="text"
-                      value={config.name}
-                      onChange={(e) =>
-                        setConfig({ ...config, name: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-stone-300 focus:outline-none focus:border-stone-600"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-serif mb-1">韓文名</label>
-                    <input
-                      type="text"
-                      value={config.korean_name}
-                      onChange={(e) =>
-                        setConfig({ ...config, korean_name: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-stone-300"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-serif mb-1">品牌名</label>
-                    <input
-                      type="text"
-                      value={config.brand_name}
-                      onChange={(e) =>
-                        setConfig({ ...config, brand_name: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-stone-300"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-serif mb-1">自我介紹</label>
-                    <textarea
-                      value={config.bio}
-                      onChange={(e) =>
-                        setConfig({ ...config, bio: e.target.value })
-                      }
-                      rows={3}
-                      className="w-full px-3 py-2 border border-stone-300"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-serif mb-1">LINE 連結</label>
-                    <input
-                      type="text"
-                      value={config.line_link}
-                      onChange={(e) =>
-                        setConfig({ ...config, line_link: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-stone-300"
-                    />
-                  </div>
-
-                  <div className="pt-4 border-t">
-                    <h3 className="font-serif text-sm mb-3">配色設計</h3>
-                    <div className="space-y-2">
-                      <div className="flex gap-2">
-                        <input
-                          type="color"
-                          value={config.bg_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, bg_color: e.target.value })
-                          }
-                          className="w-10 h-10 cursor-pointer"
-                        />
-                        <input
-                          type="text"
-                          value={config.bg_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, bg_color: e.target.value })
-                          }
-                          className="flex-1 px-3 py-2 border border-stone-300"
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="color"
-                          value={config.button1_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, button1_color: e.target.value })
-                          }
-                          className="w-10 h-10 cursor-pointer"
-                        />
-                        <input
-                          type="text"
-                          value={config.button1_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, button1_color: e.target.value })
-                          }
-                          className="flex-1 px-3 py-2 border border-stone-300"
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="color"
-                          value={config.button2_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, button2_color: e.target.value })
-                          }
-                          className="w-10 h-10 cursor-pointer"
-                        />
-                        <input
-                          type="text"
-                          value={config.button2_color}
-                          onChange={(e) =>
-                            setConfig({ ...config, button2_color: e.target.value })
-                          }
-                          className="flex-1 px-3 py-2 border border-stone-300"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
+                  <input
+                    type="text"
+                    placeholder="名字"
+                    value={config.name}
+                    onChange={(e) =>
+                      setConfig({ ...config, name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-stone-300"
+                  />
+                  <input
+                    type="text"
+                    placeholder="韓文名"
+                    value={config.korean_name}
+                    onChange={(e) =>
+                      setConfig({ ...config, korean_name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-stone-300"
+                  />
+                  <input
+                    type="text"
+                    placeholder="品牌名"
+                    value={config.brand_name}
+                    onChange={(e) =>
+                      setConfig({ ...config, brand_name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-stone-300"
+                  />
+                  <textarea
+                    placeholder="自我介紹"
+                    value={config.bio}
+                    onChange={(e) =>
+                      setConfig({ ...config, bio: e.target.value })
+                    }
+                    rows={3}
+                    className="w-full px-3 py-2 border border-stone-300"
+                  />
+                  <input
+                    type="text"
+                    placeholder="LINE 連結"
+                    value={config.line_link}
+                    onChange={(e) =>
+                      setConfig({ ...config, line_link: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-stone-300"
+                  />
                   <button
-                    onClick={handleSaveConfig}
-                    disabled={saving}
-                    className="w-full py-2 bg-stone-900 text-white font-serif hover:bg-stone-800 disabled:opacity-50"
+                    onClick={async () => {
+                      setSaving(true);
+                      await fetch("/api/homepage-config", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          name: config.name,
+                          korean_name: config.korean_name,
+                          brand_name: config.brand_name,
+                          bio: config.bio,
+                          line_link: config.line_link,
+                          button1_color: config.button1_color,
+                          button2_color: config.button2_color,
+                          bg_color: config.bg_color,
+                        }),
+                      });
+                      setSaving(false);
+                      alert("保存成功！");
+                    }}
+                    className="w-full py-2 bg-stone-900 text-white"
                   >
-                    {saving ? "保存中..." : "保存首頁配置"}
+                    保存
                   </button>
-                </div>
-
-                {/* 預覽 */}
-                <div
-                  className="p-6 border border-stone-300 rounded"
-                  style={{ backgroundColor: config.bg_color }}
-                >
-                  <h3 className="font-serif text-center mb-4">預覽</h3>
-                  <div className="text-center space-y-3">
-                    <h2 className="text-3xl font-serif text-stone-900">
-                      {config.name}
-                    </h2>
-                    <p className="text-xs text-stone-600">{config.korean_name}</p>
-                    <h3 className="text-lg font-serif text-stone-900">
-                      {config.brand_name}
-                    </h3>
-                    <p className="text-xs text-stone-700">{config.bio}</p>
-                    <div className="space-y-1 pt-2">
-                      <button
-                        style={{ backgroundColor: config.button1_color }}
-                        className="w-full py-2 text-xs text-white"
-                      >
-                        {config.button1_text}
-                      </button>
-                      <button
-                        style={{ backgroundColor: config.button2_color }}
-                        className="w-full py-2 text-xs text-stone-900"
-                      >
-                        {config.button2_text}
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
 
             {/* 課程管理 */}
             {activeTab === "courses" && (
-              <div className="bg-white p-6 border border-stone-300 rounded">
-                <h2 className="text-xl font-serif text-stone-900 mb-4">
-                  目前開課班級 ({courses.length})
-                </h2>
-                <div className="space-y-4">
+              <div className="space-y-6">
+                <button
+                  onClick={() =>
+                    setEditingCourse({ name: "", day: "", level: "", time: "", available_spots: 0, description: "", registration_link: "", published: true, order_num: courses.length })
+                  }
+                  className="px-4 py-2 bg-stone-900 text-white"
+                >
+                  新增課程
+                </button>
+
+                {editingCourse && (
+                  <div className="bg-white p-6 border border-stone-300">
+                    <h3 className="font-serif mb-4">編輯課程</h3>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        placeholder="課程名"
+                        value={editingCourse.name || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            name: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="星期"
+                        value={editingCourse.day || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            day: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="等級"
+                        value={editingCourse.level || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            level: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="時間"
+                        value={editingCourse.time || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            time: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="number"
+                        placeholder="可插班人數"
+                        value={editingCourse.available_spots || 0}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            available_spots: parseInt(e.target.value),
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <textarea
+                        placeholder="說明"
+                        value={editingCourse.description || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            description: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="報名連結"
+                        value={editingCourse.registration_link || ""}
+                        onChange={(e) =>
+                          setEditingCourse({
+                            ...editingCourse,
+                            registration_link: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            saveCourse(editingCourse as Partial<Course>)
+                          }
+                          className="flex-1 py-2 bg-stone-900 text-white"
+                        >
+                          保存
+                        </button>
+                        <button
+                          onClick={() => setEditingCourse(null)}
+                          className="flex-1 py-2 bg-stone-300"
+                        >
+                          取消
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-3">
                   {courses.map((course) => (
                     <div
                       key={course.id}
-                      className="p-4 border border-stone-200 rounded"
+                      className="p-4 border border-stone-200 flex justify-between items-start"
                     >
-                      <div className="font-serif text-stone-900 mb-1">
-                        {course.day} · {course.level} · {course.name}
+                      <div>
+                        <div className="font-serif">
+                          {course.day} · {course.level} · {course.name}
+                        </div>
+                        <div className="text-sm text-stone-600">
+                          {course.time} | 可插班 {course.available_spots} 人
+                        </div>
                       </div>
-                      <div className="text-sm text-stone-600">
-                        {course.time} | 可插班 {course.availableSpots} 人
-                      </div>
-                      <p className="text-xs text-stone-600 mt-1">
-                        {course.description}
-                      </p>
-                      {course.registrationLink && (
-                        <a
-                          href={course.registrationLink}
-                          target="_blank"
-                          className="text-xs text-stone-900 hover:underline"
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditingCourse(course)}
+                          className="px-3 py-1 bg-stone-200 text-sm"
                         >
-                          報名連結 →
-                        </a>
-                      )}
+                          編輯
+                        </button>
+                        <button
+                          onClick={() => deleteCourse(course.id)}
+                          className="px-3 py-1 bg-red-200 text-sm text-red-900"
+                        >
+                          刪除
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-stone-600 mt-6">
-                  💡 課程直接在 Notion 資料庫編輯
-                </p>
               </div>
             )}
 
             {/* 資源管理 */}
             {activeTab === "resources" && (
-              <div className="bg-white p-6 border border-stone-300 rounded">
-                <h2 className="text-xl font-serif text-stone-900 mb-4">
-                  學習資源 ({resources.length})
-                </h2>
-                <div className="grid gap-4">
+              <div className="space-y-6">
+                <button
+                  onClick={() =>
+                    setEditingResource({
+                      title: "",
+                      description: "",
+                      category: "",
+                      link: "",
+                      image: "",
+                      published: true,
+                      order_num: resources.length,
+                    })
+                  }
+                  className="px-4 py-2 bg-stone-900 text-white"
+                >
+                  新增資源
+                </button>
+
+                {editingResource && (
+                  <div className="bg-white p-6 border border-stone-300">
+                    <h3 className="font-serif mb-4">編輯資源</h3>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        placeholder="標題"
+                        value={editingResource.title || ""}
+                        onChange={(e) =>
+                          setEditingResource({
+                            ...editingResource,
+                            title: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="分類"
+                        value={editingResource.category || ""}
+                        onChange={(e) =>
+                          setEditingResource({
+                            ...editingResource,
+                            category: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <textarea
+                        placeholder="說明"
+                        value={editingResource.description || ""}
+                        onChange={(e) =>
+                          setEditingResource({
+                            ...editingResource,
+                            description: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="連結"
+                        value={editingResource.link || ""}
+                        onChange={(e) =>
+                          setEditingResource({
+                            ...editingResource,
+                            link: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="圖片 URL"
+                        value={editingResource.image || ""}
+                        onChange={(e) =>
+                          setEditingResource({
+                            ...editingResource,
+                            image: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            saveResource(editingResource as Partial<Resource>)
+                          }
+                          className="flex-1 py-2 bg-stone-900 text-white"
+                        >
+                          保存
+                        </button>
+                        <button
+                          onClick={() => setEditingResource(null)}
+                          className="flex-1 py-2 bg-stone-300"
+                        >
+                          取消
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-3">
                   {resources.map((resource) => (
                     <div
                       key={resource.id}
-                      className="p-4 border border-stone-200 rounded"
+                      className="p-4 border border-stone-200 flex justify-between items-start"
                     >
-                      <div className="font-serif text-stone-900">
-                        {resource.title}
+                      <div>
+                        <div className="font-serif">{resource.title}</div>
+                        <div className="text-sm text-stone-600">
+                          {resource.category}
+                        </div>
                       </div>
-                      <p className="text-xs text-stone-600 mt-1">
-                        {resource.category} · {resource.description}
-                      </p>
-                      <a
-                        href={resource.link}
-                        target="_blank"
-                        className="text-xs text-stone-900 hover:underline"
-                      >
-                        查看資源 →
-                      </a>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditingResource(resource)}
+                          className="px-3 py-1 bg-stone-200 text-sm"
+                        >
+                          編輯
+                        </button>
+                        <button
+                          onClick={() => deleteResource(resource.id)}
+                          className="px-3 py-1 bg-red-200 text-sm text-red-900"
+                        >
+                          刪除
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-stone-600 mt-6">
-                  💡 資源直接在 Notion 資料庫編輯
-                </p>
               </div>
             )}
 
-            {/* 好康分享 */}
+            {/* 好康管理 */}
             {activeTab === "deals" && (
-              <div className="bg-white p-6 border border-stone-300 rounded">
-                <h2 className="text-xl font-serif text-stone-900 mb-4">
-                  好康分享 ({deals.length})
-                </h2>
-                <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-6">
+                <button
+                  onClick={() =>
+                    setEditingDeal({
+                      title: "",
+                      description: "",
+                      link: "",
+                      image: "",
+                      published: true,
+                      order_num: deals.length,
+                    })
+                  }
+                  className="px-4 py-2 bg-stone-900 text-white"
+                >
+                  新增好康
+                </button>
+
+                {editingDeal && (
+                  <div className="bg-white p-6 border border-stone-300">
+                    <h3 className="font-serif mb-4">編輯好康</h3>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        placeholder="標題"
+                        value={editingDeal.title || ""}
+                        onChange={(e) =>
+                          setEditingDeal({
+                            ...editingDeal,
+                            title: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <textarea
+                        placeholder="說明"
+                        value={editingDeal.description || ""}
+                        onChange={(e) =>
+                          setEditingDeal({
+                            ...editingDeal,
+                            description: e.target.value,
+                          })
+                        }
+                        rows={2}
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="連結"
+                        value={editingDeal.link || ""}
+                        onChange={(e) =>
+                          setEditingDeal({
+                            ...editingDeal,
+                            link: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <input
+                        type="text"
+                        placeholder="圖片 URL"
+                        value={editingDeal.image || ""}
+                        onChange={(e) =>
+                          setEditingDeal({
+                            ...editingDeal,
+                            image: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-stone-300"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => saveDeal(editingDeal as Partial<Deal>)}
+                          className="flex-1 py-2 bg-stone-900 text-white"
+                        >
+                          保存
+                        </button>
+                        <button
+                          onClick={() => setEditingDeal(null)}
+                          className="flex-1 py-2 bg-stone-300"
+                        >
+                          取消
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-3">
                   {deals.map((deal) => (
                     <div
                       key={deal.id}
-                      className="p-4 border border-stone-200 rounded"
+                      className="p-4 border border-stone-200 flex justify-between items-start"
                     >
-                      <div className="font-serif text-stone-900">
-                        {deal.title}
+                      <div className="font-serif">{deal.title}</div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditingDeal(deal)}
+                          className="px-3 py-1 bg-stone-200 text-sm"
+                        >
+                          編輯
+                        </button>
+                        <button
+                          onClick={() => deleteDeal(deal.id)}
+                          className="px-3 py-1 bg-red-200 text-sm text-red-900"
+                        >
+                          刪除
+                        </button>
                       </div>
-                      <p className="text-xs text-stone-600 mt-1">
-                        {deal.description}
-                      </p>
-                      <a
-                        href={deal.link}
-                        target="_blank"
-                        className="text-xs text-stone-900 hover:underline"
-                      >
-                        查看好康 →
-                      </a>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-stone-600 mt-6">
-                  💡 好康直接在 Notion 資料庫編輯
-                </p>
-              </div>
-            )}
-
-            {/* 預覽 */}
-            {activeTab === "preview" && (
-              <div className="bg-white p-6 border border-stone-300 rounded">
-                <iframe
-                  src="/"
-                  className="w-full h-96 border-0"
-                  title="首頁預覽"
-                />
               </div>
             )}
           </>

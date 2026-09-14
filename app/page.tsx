@@ -1,6 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getHomepageConfig } from "@/lib/supabase";
+import {
+  getHomepageConfig,
+  getCourses,
+  getResources,
+  getDeals,
+} from "@/lib/supabase";
+
+export const revalidate = 300;
 
 interface Course {
   id: string;
@@ -8,9 +15,9 @@ interface Course {
   day: string;
   level: string;
   time: string;
-  availableSpots: number;
+  available_spots: number;
   description: string;
-  registrationLink: string;
+  registration_link: string;
 }
 
 interface Resource {
@@ -30,42 +37,14 @@ interface Deal {
   image: string;
 }
 
-async function getContent() {
-  try {
-    // Try to fetch from Notion API first
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    const response = await fetch(`${baseUrl}/api/content`, {
-      cache: "no-store",
-      next: { revalidate: 300 }, // Revalidate every 5 minutes
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch from API");
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error loading content:", error);
-
-    // Fallback to JSON file if API fails
-    try {
-      const content = await import("@/data/content.json");
-      return content.default;
-    } catch (fallbackError) {
-      console.error("Error loading fallback content:", fallbackError);
-      return { courses: [], resources: [], deals: [] };
-    }
-  }
-}
-
 export default async function Home() {
-  const data = await getContent();
-  const courses: Course[] = data.courses || [];
-  const resources: Resource[] = data.resources || [];
-  const deals: Deal[] = data.deals || [];
-
-  // 從 Supabase 讀取首頁配置
-  const config = await getHomepageConfig();
+  // 從 Supabase 讀取所有資料
+  const [config, courses, resources, deals] = await Promise.all([
+    getHomepageConfig(),
+    getCourses(),
+    getResources(),
+    getDeals(),
+  ]);
 
   // 預設配置
   const defaultConfig = {
@@ -177,7 +156,7 @@ export default async function Home() {
                       </p>
                     </div>
                     <span className="text-sm font-serif text-stone-600">
-                      可插班 {course.availableSpots} 人
+                      可插班 {course.available_spots} 人
                     </span>
                   </div>
                   {course.description && (
@@ -185,9 +164,9 @@ export default async function Home() {
                       {course.description}
                     </p>
                   )}
-                  {course.registrationLink && (
+                  {course.registration_link && (
                     <Link
-                      href={course.registrationLink}
+                      href={course.registration_link}
                       target="_blank"
                       className="inline-block text-sm font-serif text-stone-900 border-b-2 border-stone-900 hover:opacity-70 transition"
                     >
