@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   title: "蔚樺 웨이화 | 韓語蜂蜜罐",
   description: "透過韓綜、美食和日常故事，把韓文變得有趣又好記。加入韓語蜂蜜罐，發現韓文秘訣！",
   icons: {
-    icon: "/favicon.png?v=2",
-    apple: "/apple-touch-icon.png?v=2",
+    icon: "/favicon-small.png?v=3",
+    apple: "/apple-touch-icon.png?v=3",
   },
   openGraph: {
     title: "蔚樺 웨이화 | 韓語蜂蜜罐",
@@ -39,8 +39,8 @@ export default function RootLayout({
       className={`${playfairDisplay.variable} ${lora.variable} h-full antialiased`}
     >
       <head>
-        <link rel="icon" href="/favicon.png?v=2" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+        <link rel="icon" href="/favicon-small.png?v=3" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
       </head>
       <body className="min-h-full flex flex-col bg-stone-50">{children}</body>
     </html>
