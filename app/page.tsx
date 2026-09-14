@@ -33,7 +33,7 @@ export default async function Home() {
               <h1 className="text-5xl md:text-6xl font-serif text-stone-900">
                 {siteConfig.name}
               </h1>
-              <p className="text-sm text-stone-600 tracking-widest font-light">
+              <p className="text-2xl md:text-3xl text-stone-600 tracking-widest font-light">
                 {siteConfig.koreanName}
               </p>
             </div>
