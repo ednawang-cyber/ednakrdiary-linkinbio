@@ -149,3 +149,192 @@ export async function getPageStats(days: number = 7) {
     return [];
   }
 }
+
+// ========== 課程管理 ==========
+export async function getCourses() {
+  try {
+    const { data, error } = await supabase
+      .from("courses")
+      .select("*")
+      .eq("published", true)
+      .order("order_num", { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return [];
+  }
+}
+
+export async function createCourse(course: Partial<Course>) {
+  try {
+    const { data, error } = await supabase
+      .from("courses")
+      .insert([course])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error creating course:", error);
+    return null;
+  }
+}
+
+export async function updateCourse(id: string, course: Partial<Course>) {
+  try {
+    const { error } = await supabase
+      .from("courses")
+      .update({ ...course, updated_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error updating course:", error);
+    return false;
+  }
+}
+
+export async function deleteCourse(id: string) {
+  try {
+    const { error } = await supabase
+      .from("courses")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    return false;
+  }
+}
+
+// ========== 資源管理 ==========
+export async function getResources() {
+  try {
+    const { data, error } = await supabase
+      .from("resources")
+      .select("*")
+      .eq("published", true)
+      .order("order_num", { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching resources:", error);
+    return [];
+  }
+}
+
+export async function createResource(resource: Partial<Resource>) {
+  try {
+    const { data, error } = await supabase
+      .from("resources")
+      .insert([resource])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error creating resource:", error);
+    return null;
+  }
+}
+
+export async function updateResource(id: string, resource: Partial<Resource>) {
+  try {
+    const { error } = await supabase
+      .from("resources")
+      .update({ ...resource, updated_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error updating resource:", error);
+    return false;
+  }
+}
+
+export async function deleteResource(id: string) {
+  try {
+    const { error } = await supabase
+      .from("resources")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error deleting resource:", error);
+    return false;
+  }
+}
+
+// ========== 好康管理 ==========
+export async function getDeals() {
+  try {
+    const { data, error } = await supabase
+      .from("deals")
+      .select("*")
+      .eq("published", true)
+      .order("order_num", { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching deals:", error);
+    return [];
+  }
+}
+
+export async function createDeal(deal: Partial<Deal>) {
+  try {
+    const { data, error } = await supabase
+      .from("deals")
+      .insert([deal])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error creating deal:", error);
+    return null;
+  }
+}
+
+export async function updateDeal(id: string, deal: Partial<Deal>) {
+  try {
+    const { error } = await supabase
+      .from("deals")
+      .update({ ...deal, updated_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error updating deal:", error);
+    return false;
+  }
+}
+
+export async function deleteDeal(id: string) {
+  try {
+    const { error } = await supabase
+      .from("deals")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error deleting deal:", error);
+    return false;
+  }
+}
