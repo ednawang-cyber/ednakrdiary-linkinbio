@@ -6,7 +6,7 @@ export const siteConfig = {
 成均館交換 → 教育部獎學金 → 大邱大學語學堂結業
 現在，我用韓綜、美食和日常故事，把韓文變得有趣又好記
 跟著我，蜂蜜罐裡的韓文秘訣等你來發現 🍯`,
-  avatarUrl: "/images/avatar.jpg",
+  avatarUrl: "/images/avatar.png",
   lineLink: "https://line.me/R/ti/p/@942pdsee",
   button1Text: "加入 LINE 預約一對一課程",
   button2Text: "查看目前開課班級",
