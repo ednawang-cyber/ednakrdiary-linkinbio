@@ -1,34 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getHomepageConfig, updateHomepageConfig } from "@/lib/supabase";
 
-// 獲取首頁配置
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
 export async function GET() {
   try {
-    const config = await getHomepageConfig();
-    if (!config) {
-      return NextResponse.json(
-        { error: "Config not found" },
-        { status: 404 }
-      );
+    const url = `${SUPABASE_URL}/rest/v1/homepage_config?id=eq.1&select=*`;
+
+    const response = await fetch(url, {
+      headers: {
+        "apikey": SUPABASE_KEY || "",
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data || data.length === 0) {
+      return NextResponse.json({ error: "Config not found" }, { status: 404 });
     }
-    return NextResponse.json(config);
-  } catch (error) {
+
+    return NextResponse.json(data[0]);
+  } catch (error: any) {
     console.error("GET /api/homepage-config error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error?.message || "Internal server error" },
       { status: 500 }
     );
   }
 }
 
-// 更新首頁配置
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
-    const success = await updateHomepageConfig(data);
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/homepage_config?id=eq.1`,
+      {
+        method: "PATCH",
+        headers: {
+          "apikey": SUPABASE_KEY || "",
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation",
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-    if (!success) {
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Supabase error:", error);
       return NextResponse.json(
         { error: "Failed to update config" },
         { status: 400 }
@@ -36,10 +59,10 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error("POST /api/homepage-config error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error?.message || "Internal server error" },
       { status: 500 }
     );
   }
