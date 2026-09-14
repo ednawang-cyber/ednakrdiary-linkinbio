@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   description: "透過韓綜、美食和日常故事，把韓文變得有趣又好記。加入韓語蜂蜜罐，發現韓文秘訣！",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png" },
     ],
-    apple: "/favicon.svg",
+    apple: "/favicon.png",
   },
   openGraph: {
     title: "蔚樺 웨이화 | 韓語蜂蜜罐",
