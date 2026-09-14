@@ -84,7 +84,28 @@ export default function AdminPage() {
         fetch("/api/deals"),
       ]);
 
-      if (configRes.ok) setConfig(await configRes.json());
+      if (configRes.ok) {
+        const data = await configRes.json();
+        setConfig(data);
+      } else {
+        // 設定預設值如果取不到
+        setConfig({
+          id: 1,
+          name: "",
+          korean_name: "",
+          brand_name: "",
+          bio: "",
+          avatar_url: "",
+          line_link: "",
+          button1_text: "",
+          button2_text: "",
+          bg_color: "#faf8f3",
+          button1_color: "#000000",
+          button2_color: "#d3d3d3",
+          updated_at: "",
+        });
+      }
+
       if (coursesRes.ok) {
         const data = await coursesRes.json();
         setCourses(data.courses || []);
