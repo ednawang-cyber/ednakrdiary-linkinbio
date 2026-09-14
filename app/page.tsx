@@ -181,7 +181,7 @@ export default async function Home() {
         {/* Footer */}
         <div className="pt-16 border-t border-stone-300 text-center">
           <p className="text-xs text-stone-600 tracking-widest">
-            © 2024 蔚樺 웨이화 | 韓語蜂蜜罐
+            © 2026 蔚樺 웨이화 | 韓語蜂蜜罐
           </p>
           <p className="text-xs text-stone-500 mt-3">
             <Link href="/admin" className="hover:text-stone-700 transition">
