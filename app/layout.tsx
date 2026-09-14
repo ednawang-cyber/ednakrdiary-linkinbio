@@ -17,6 +17,9 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "蔚樺 웨이화 | 韓語蜂蜜罐",
   description: "透過韓綜、美食和日常故事，把韓文變得有趣又好記。加入韓語蜂蜜罐，發現韓文秘訣！",
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "蔚樺 웨이화 | 韓語蜂蜜罐",
     description: "透過韓綜、美食和日常故事學習韓文",
