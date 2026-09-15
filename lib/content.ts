@@ -68,3 +68,9 @@ export const deals = [
     image: null,
   },
 ];
+
+export const contact = {
+  title: "合作及工作聯繫",
+  email: "weihuawang@naver.com",
+  description: "有任何合作機會或工作相關洽詢，歡迎寄信給我！",
+};

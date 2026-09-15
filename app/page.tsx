@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { siteConfig, courses, resources, deals } from "@/lib/content";
+import { siteConfig, courses, resources, deals, contact } from "@/lib/content";
 
 export const revalidate = 300;
 
@@ -174,6 +174,30 @@ export default async function Home() {
                   </p>
                 </div>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Contact Section - Card Style */}
+        {contact && (
+          <section id="contact" className="mb-20">
+            <div className="mb-12">
+              <h2 className="text-3xl font-serif text-stone-900 mb-4">
+                {contact.title}
+              </h2>
+              <div className="w-16 h-px bg-stone-400"></div>
+            </div>
+
+            <div className="max-w-md mx-auto border border-stone-300 p-8 text-center">
+              <p className="text-sm text-stone-600 mb-4 leading-relaxed">
+                {contact.description}
+              </p>
+              <a
+                href={`mailto:${contact.email}`}
+                className="inline-block text-base font-serif text-stone-900 border-b-2 border-stone-900 hover:opacity-70 transition"
+              >
+                {contact.email}
+              </a>
             </div>
           </section>
         )}
