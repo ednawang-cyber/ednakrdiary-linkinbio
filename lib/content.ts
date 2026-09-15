@@ -50,11 +50,11 @@ export const courses = [
 
 export const resources = [
   {
-    id: "resource-construction",
-    title: "施工中",
-    category: "Coming Soon",
-    description: "敬請期待更多學習資源...",
-    link: "#",
+    id: "resource-topik1",
+    title: "【TOPIK1】零碎時間救星！18天單字複習挑戰",
+    category: "TOPIK 準備",
+    description: "利用零碎時間高效複習TOPIK1單字，18天挑戰計畫",
+    link: "https://app.notion.com/p/TOPIK1-18-32ecbc8fe0928075bf51e1e0ce36223d?source=copy_link",
     image: null,
   },
 ];

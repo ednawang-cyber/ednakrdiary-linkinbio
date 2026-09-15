@@ -134,17 +134,23 @@ export default async function Home() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {resources.map((resource) => (
-                <div
+                <a
                   key={resource.id}
-                  className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300 text-center"
+                  href={resource.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300 text-center block"
                 >
                   <h3 className="font-serif text-lg text-stone-900 mb-2">
                     {resource.title}
                   </h3>
-                  <p className="text-sm text-stone-600">
+                  <p className="text-sm text-stone-600 mb-3">
                     {resource.description}
                   </p>
-                </div>
+                  <span className="text-xs text-stone-500 font-serif">
+                    查看資源 →
+                  </span>
+                </a>
               ))}
             </div>
           </section>
