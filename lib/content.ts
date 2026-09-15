@@ -57,6 +57,14 @@ export const resources = [
     link: "https://shell-medicine-513.notion.site/TOPIK1-18-32ecbc8fe0928075bf51e1e0ce36223d",
     image: null,
   },
+  {
+    id: "resource-thematic",
+    title: "主題式單字",
+    category: "單字學習",
+    description: "依主題分類的韓文單字整理。此網站會不定時更新",
+    link: "https://shell-medicine-513.notion.site/341cbc8fe0928037a4b2f77cef45b067",
+    image: null,
+  },
 ];
 
 export const deals = [
