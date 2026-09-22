@@ -67,9 +67,9 @@ export const resources = [
   },
   {
     id: "resource-grammar",
-    title: "韓文文法學習",
+    title: "【文法筆記】 하다 vs. 되다 對照表",
     category: "文法",
-    description: "系統化的韓文文法整理與講解",
+    description: "하다 與 되다 的差異對比，幫助你正確使用",
     link: "https://shell-medicine-513.notion.site/vs-vs-248cbc8fe09280c481a0ea8ba48576d9",
     image: null,
   },
