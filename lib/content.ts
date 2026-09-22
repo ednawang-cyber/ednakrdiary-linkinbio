@@ -65,6 +65,14 @@ export const resources = [
     link: "https://shell-medicine-513.notion.site/341cbc8fe0928037a4b2f77cef45b067",
     image: null,
   },
+  {
+    id: "resource-grammar",
+    title: "韓文文法學習",
+    category: "文法",
+    description: "系統化的韓文文法整理與講解",
+    link: "https://shell-medicine-513.notion.site/vs-vs-248cbc8fe09280c481a0ea8ba48576d9",
+    image: null,
+  },
 ];
 
 export const deals = [
