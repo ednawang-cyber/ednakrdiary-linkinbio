@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lora } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -42,7 +43,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-small.png?v=3" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
       </head>
-      <body className="min-h-full flex flex-col bg-stone-50">{children}</body>
+      <body className="min-h-full flex flex-col bg-stone-50">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
