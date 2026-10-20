@@ -48,11 +48,18 @@ export const courses = [
   },
 ];
 
+export const resourceCategories = [
+  { id: "exam", label: "考試" },
+  { id: "vocab", label: "單字" },
+  { id: "grammar", label: "文法" },
+  { id: "life", label: "生活韓語" },
+];
+
 export const resources = [
   {
     id: "resource-topik1",
     title: "【TOPIK1】零碎時間救星！18天單字複習挑戰",
-    category: "TOPIK 準備",
+    category: "exam",
     description: "利用零碎時間高效複習TOPIK1單字，18天挑戰計畫",
     link: "https://shell-medicine-513.notion.site/TOPIK1-18-32ecbc8fe0928075bf51e1e0ce36223d",
     image: null,
@@ -60,7 +67,7 @@ export const resources = [
   {
     id: "resource-thematic",
     title: "主題式單字",
-    category: "單字學習",
+    category: "vocab",
     description: "依主題分類的韓文單字整理。此網站會不定時更新",
     link: "https://shell-medicine-513.notion.site/341cbc8fe0928037a4b2f77cef45b067",
     image: null,
@@ -68,7 +75,7 @@ export const resources = [
   {
     id: "resource-grammar",
     title: "【文法筆記】 하다 vs. 되다 對照表",
-    category: "文法",
+    category: "grammar",
     description: "하다 與 되다 的差異對比，幫助你正確使用",
     link: "https://shell-medicine-513.notion.site/vs-vs-248cbc8fe09280c481a0ea8ba48576d9",
     image: null,
@@ -76,7 +83,7 @@ export const resources = [
   {
     id: "resource-participate",
     title: "【單字筆記】참여하다&참석하다&참가하다 使用差異",
-    category: "單字辨析",
+    category: "vocab",
     description: "三個相似動詞的用法與差異比較",
     link: "https://shell-medicine-513.notion.site/3fecbc8fe0928018a52cd162b93b3bf7",
     image: null,
@@ -84,7 +91,7 @@ export const resources = [
   {
     id: "resource-meat-cuts",
     title: "肉品部位圖（牛肉・豬肉）",
-    category: "生活韓語",
+    category: "life",
     description: "소고기・돼지고기 부위도，一次認識韓國肉品部位名稱",
     link: "/meat-guide",
     image: null,

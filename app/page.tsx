@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { siteConfig, courses, resources, deals, contact } from "@/lib/content";
+import { siteConfig, courses, resourceCategories, resources, deals, contact } from "@/lib/content";
 
 export const revalidate = 300;
 
@@ -132,26 +132,51 @@ export default async function Home() {
               <div className="w-16 h-px bg-stone-400"></div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {resources.map((resource) => (
+            <nav className="flex flex-wrap gap-3 mb-12">
+              {resourceCategories.map((category) => (
                 <a
-                  key={resource.id}
-                  href={resource.link}
-                  target={resource.link.startsWith("/") ? undefined : "_blank"}
-                  rel={resource.link.startsWith("/") ? undefined : "noopener noreferrer"}
-                  className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300 text-center block"
+                  key={category.id}
+                  href={`#resources-${category.id}`}
+                  className="px-4 py-1.5 border border-stone-300 text-sm font-serif text-stone-700 hover:border-stone-600 hover:text-stone-900 transition duration-300"
                 >
-                  <h3 className="font-serif text-lg text-stone-900 mb-2">
-                    {resource.title}
-                  </h3>
-                  <p className="text-sm text-stone-600 mb-3">
-                    {resource.description}
-                  </p>
-                  <span className="text-xs text-stone-500 font-serif">
-                    查看資源 →
-                  </span>
+                  {category.label}
                 </a>
               ))}
+            </nav>
+
+            <div className="space-y-14">
+              {resourceCategories.map((category) => {
+                const items = resources.filter((r) => r.category === category.id);
+                if (items.length === 0) return null;
+                return (
+                  <div key={category.id} id={`resources-${category.id}`} className="scroll-mt-24">
+                    <h3 className="text-xl font-serif text-stone-800 mb-6">
+                      {category.label}
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {items.map((resource) => (
+                        <a
+                          key={resource.id}
+                          href={resource.link}
+                          target={resource.link.startsWith("/") ? undefined : "_blank"}
+                          rel={resource.link.startsWith("/") ? undefined : "noopener noreferrer"}
+                          className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300 text-center block"
+                        >
+                          <h4 className="font-serif text-lg text-stone-900 mb-2">
+                            {resource.title}
+                          </h4>
+                          <p className="text-sm text-stone-600 mb-3">
+                            {resource.description}
+                          </p>
+                          <span className="text-xs text-stone-500 font-serif">
+                            查看資源 →
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
