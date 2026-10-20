@@ -49,7 +49,7 @@ export const courses = [
 ];
 
 export const resourceCategories = [
-  { id: "exam", label: "考試" },
+  { id: "exam", label: "TOPIK" },
   { id: "vocab", label: "單字" },
   { id: "grammar", label: "文法" },
   { id: "life", label: "生活韓語" },
