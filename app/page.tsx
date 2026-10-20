@@ -137,8 +137,8 @@ export default async function Home() {
                 <a
                   key={resource.id}
                   href={resource.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={resource.link.startsWith("/") ? undefined : "_blank"}
+                  rel={resource.link.startsWith("/") ? undefined : "noopener noreferrer"}
                   className="border border-stone-300 p-6 hover:border-stone-500 transition duration-300 text-center block"
                 >
                   <h3 className="font-serif text-lg text-stone-900 mb-2">

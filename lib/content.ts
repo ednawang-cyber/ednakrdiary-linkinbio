@@ -73,6 +73,14 @@ export const resources = [
     link: "https://shell-medicine-513.notion.site/vs-vs-248cbc8fe09280c481a0ea8ba48576d9",
     image: null,
   },
+  {
+    id: "resource-meat-cuts",
+    title: "肉品部位圖（牛肉・豬肉）",
+    category: "生活韓語",
+    description: "소고기・돼지고기 부위도，一次認識韓國肉品部位名稱",
+    link: "/meat-guide",
+    image: null,
+  },
 ];
 
 export const deals = [
