@@ -75,7 +75,7 @@ export const resources = [
   },
   {
     id: "resource-participate",
-    title: "참여하다&참석하다&참가하다 使用差異",
+    title: "【單字筆記】참여하다&참석하다&참가하다 使用差異",
     category: "單字辨析",
     description: "三個相似動詞的用法與差異比較",
     link: "https://shell-medicine-513.notion.site/3fecbc8fe0928018a52cd162b93b3bf7",
