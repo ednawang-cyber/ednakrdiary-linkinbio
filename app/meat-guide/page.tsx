@@ -39,13 +39,13 @@ export default function MeatGuidePage() {
         </div>
 
         <div className="mt-12 border border-stone-300 p-6 md:p-8 text-sm text-stone-700 leading-loose whitespace-pre-line">
-          {`這兩張圖片歡迎大家截圖或是存在手機裡！
+          {`兩張圖片歡迎大家截圖或是存在手機裡唷～
 部位的名稱會以台灣人習慣的講法來寫
 吃貨如我雖然參考了很多資料
 可能會有一些錯誤的地方
-也請對肉品非常了解的朋友們留言告訴我們更多唷！
+也請對肉品非常了解的朋友們私訊我交流更多！
 
-*如果單字及部位有誤，歡迎大家不吝回覆`}
+*如果單字及部位有誤，歡迎大家私訊我🫶🏻`}
         </div>
       </div>
     </main>
