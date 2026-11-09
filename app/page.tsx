@@ -230,6 +230,21 @@ export default async function Home() {
                 {contact.email}
               </a>
             </div>
+
+            <div className="max-w-md mx-auto border border-stone-300 p-8 text-center mt-6">
+              <p className="text-sm text-stone-600 mb-4 leading-relaxed">
+                加入 LINE 官方帳號，預約一對一課程或詢問開課資訊
+              </p>
+              <a
+                href={siteConfig.lineLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-3 text-stone-50 font-serif text-base tracking-widest transition duration-300 hover:opacity-80"
+                style={{ backgroundColor: siteConfig.button1Color }}
+              >
+                LINE 官方帳號 @942pdsee
+              </a>
+            </div>
           </section>
         )}
 

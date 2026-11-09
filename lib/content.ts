@@ -32,8 +32,8 @@ export const courses = [
     time: "21:00-22:30",
     level: "零基礎",
     name: "零基礎密集班",
-    availableSpots: 0,
-    description: "目前已滿班",
+    availableSpots: 1,
+    description: "目前可插班 1 人！實際進度及報名請私訊老師",
     registrationLink: "https://line.me/R/ti/p/@942pdsee",
   },
   {
